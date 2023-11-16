@@ -41,7 +41,11 @@ final public class RNBackgroundActionsTask extends HeadlessJsTaskService {
             notificationIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
         }
         final PendingIntent contentIntent;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            // https://github.com/breezy-weather/breezy-weather/blob/e53a99788b27058435c912773d666e8d3799b031/app/src/main/java/org/breezyweather/background/interfaces/TileService.kt#L61
+            // https://github.com/search?q=PendingIntent.FLAG_IMMUTABLE+Build.VERSION_CODES.UPSIDE_DOWN_CAKE&type=code
+            contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_MUTABLE);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
